@@ -44,7 +44,6 @@ public class MainActivity extends Activity {
 			 */
 			@Override
 			public void resultLoaded(int err, String reason, String result) {
-				// TODO Auto-generated method stub
 				if (err == 0) {
 					tv.setText(result);
 				} else {

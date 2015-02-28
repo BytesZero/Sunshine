@@ -97,7 +97,6 @@ public class MainActivity extends ActionBarActivity {
             JuheData.executeWithAPI(1, "http://v.juhe.cn/weather/ip", JuheData.GET, params, new DataCallBack() {
                 @Override
                 public void resultLoaded(int err, String reason, String result) {
-                    // TODO Auto-generated method stub
                     Log.e(TAG, "err:" + err + "result:" + result + "reason:" + reason);
                     if (err==0){
                         try {
