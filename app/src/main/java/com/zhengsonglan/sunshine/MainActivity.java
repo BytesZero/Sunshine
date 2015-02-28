@@ -1,10 +1,16 @@
 package com.zhengsonglan.sunshine;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 
 import com.thinkland.sdk.android.DataCallBack;
 import com.thinkland.sdk.android.JuheData;
@@ -22,7 +28,21 @@ import java.util.List;
 public class MainActivity extends ActionBarActivity {
 
     public static String LOG_TAG = MainActivity.class.getSimpleName();
+    /**
+     * title
+     */
+    ImageView iv_title_right;
+    /**
+     * content
+     */
     ListView listView;
+
+    /**
+     * data
+     */
+    List<String> weekForeCast;
+    ArrayAdapter<String> dataAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +50,22 @@ public class MainActivity extends ActionBarActivity {
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         initView();
+        initTitle();
         initData();
+    }
+
+    /**
+     * 初始化Title
+     */
+    private void initTitle() {
+        iv_title_right= (ImageView) findViewById(R.id.title_right_img);
+        iv_title_right.setVisibility(View.VISIBLE);
+        iv_title_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopup(v);
+            }
+        });
     }
 
     /**
@@ -47,10 +82,10 @@ public class MainActivity extends ActionBarActivity {
                 "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
                 "Sun 6/29 - Sunny - 20/7"
         };
-        List<String> weekForeCast = new ArrayList<String>(Arrays.asList(forecasts));
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, R.layout.list_item_forecast, R.id.list_item_forecast_textview, weekForeCast);
+        weekForeCast = new ArrayList<String>(Arrays.asList(forecasts));
+        dataAdapter = new ArrayAdapter<String>(this, R.layout.list_item_forecast, R.id.list_item_forecast_textview, weekForeCast);
         listView.setAdapter(dataAdapter);
-        GetWeatherData(weekForeCast, dataAdapter);
+        GetWeatherData();
 
     }
 
@@ -63,12 +98,32 @@ public class MainActivity extends ActionBarActivity {
     }
 
     /**
+     * 显示弹出悬浮菜单
+     * @param view
+     */
+    @SuppressLint("NewApi")
+    private void showPopup(View view)
+    {
+        PopupMenu popupMenu=new PopupMenu(this,view);
+        MenuInflater inflater=popupMenu.getMenuInflater();
+        inflater.inflate(R.menu.menu_main,popupMenu.getMenu());
+        popupMenu.show();
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Log.e(LOG_TAG,"getItemId:"+item.getItemId()+"getOrder:"+item.getOrder());
+                if (item.getOrder()==1){
+                    GetWeatherData();
+                }
+                return true;
+            }
+        });
+    }
+    /**
      * 获取天气的信息
      *
-     * @param weekForeCast
-     * @param dataAdapter
      */
-    private void GetWeatherData(final List<String> weekForeCast, final ArrayAdapter<String> dataAdapter) {
+    private void GetWeatherData() {
         //聚合天气数据
         Parameters params = new Parameters();
         params.add("ip", "123.117.82.104");

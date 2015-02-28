@@ -1,18 +1,18 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:paddingLeft="@dimen/activity_horizontal_margin"
-             android:paddingRight="@dimen/activity_horizontal_margin"
-             android:paddingTop="@dimen/activity_vertical_margin"
-             android:paddingBottom="@dimen/activity_vertical_margin"
-             tools:context=".MainActivity$PlaceholderFragment">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/title"/>
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/listView_forecast"
-        android:layout_gravity="left|center_vertical" />
+        android:paddingLeft="@dimen/app_padding_left"
+        android:paddingRight="@dimen/app_padding_right"
+        android:layout_gravity="left|center_vertical"/>
 
 
-</FrameLayout>
+</LinearLayout>
