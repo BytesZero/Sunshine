@@ -19,8 +19,9 @@
             android:name="com.thinkland.juheapi.openid"
             android:value="JH66e41aae644fa91b7b65e046bf8bdab9"/>
 
+        <!--主Acitvity-->
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -28,6 +29,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!--详细Acitvity-->
+        <activity android:name=".activity.DetailActivity"/>
 
     </application>
 

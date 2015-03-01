@@ -1,12 +1,13 @@
-package com.zhengsonglan.sunshine;
+package com.zhengsonglan.sunshine.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -16,6 +17,7 @@ import com.thinkland.sdk.android.DataCallBack;
 import com.thinkland.sdk.android.JuheData;
 import com.thinkland.sdk.android.Parameters;
 import com.thinkland.sdk.android.SDKInitializer;
+import com.zhengsonglan.sunshine.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends BaseActivity {
 
     public static String LOG_TAG = MainActivity.class.getSimpleName();
     /**
@@ -85,6 +87,13 @@ public class MainActivity extends ActionBarActivity {
         weekForeCast = new ArrayList<String>(Arrays.asList(forecasts));
         dataAdapter = new ArrayAdapter<String>(this, R.layout.list_item_forecast, R.id.list_item_forecast_textview, weekForeCast);
         listView.setAdapter(dataAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent=new Intent(MainActivity.this,DetailActivity.class);
+                startActivity(intent);
+            }
+        });
         GetWeatherData();
 
     }
