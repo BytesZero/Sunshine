@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.thinkland.sdk.android.DataCallBack;
@@ -70,6 +71,16 @@ public class MainActivity extends BaseActivity {
                 LayoutInflater inflater=getLayoutInflater();
                 View view=View.inflate(getApplicationContext(),R.layout.activity_detail,null);
                 TextView address= (TextView) view.findViewById(R.id.detail_tv_address);
+                ImageView iv_shuaxin= (ImageView) view.findViewById(R.id.detail_iv_shuaxin);
+                iv_shuaxin.setTag(position);
+                iv_shuaxin.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int position= (int) v.getTag();
+                        String selected_address=locations[position];
+                        GetWeatherData(selected_address,position);
+                    }
+                });
                 String selected_address=locations[position];
                 address.setText(selected_address);
                 GetWeatherData(selected_address,position);
@@ -113,23 +124,6 @@ public class MainActivity extends BaseActivity {
             public void resultLoaded(int err, String reason, String result) {
                 Log.e(LOG_TAG, "err:" + err + "result:" + result + "reason:" + reason);
                 if (err == 0) {
-                    /*"sk": {
-                        "temp": "7",
-                                "wind_direction": "西南风",
-                                "wind_strength": "2级",
-                                "humidity": "21%",
-                                "time": "19:00"
-                    },
-                    "today": {
-                        "temperature": "-3℃~11℃",
-                                "weather": "晴",
-                                "weather_id": {
-                            "fa": "00",
-                                    "fb": "00"
-                        },
-                        "wind": "南风3-4 级",
-                                "week": "星期日",
-                                "city": "北京",*/
                     try {
                         JSONObject jsonObject = new JSONObject(result);
                         JSONObject resultObject = jsonObject.getJSONObject("result");
@@ -145,7 +139,7 @@ public class MainActivity extends BaseActivity {
                         tv_temp.setText(temp+"°");
                         tv_time.setText(time+" 发布");
 
-                        Log.e(LOG_TAG,temp+":"+time);
+
                         //today
                         JSONObject todayObject = resultObject.getJSONObject("today");
                         String city = todayObject.getString("city");
@@ -154,6 +148,9 @@ public class MainActivity extends BaseActivity {
                         String temperature = todayObject.getString("temperature");
                         String weather = todayObject.getString("weather");
                         String week = todayObject.getString("week");
+
+                        JSONObject weather_id=todayObject.getJSONObject("weather_id");
+                        String fa=weather_id.getString("fa");
                         //今日温度
                         TextView tv_temperature= (TextView) view.findViewById(R.id.detail_tv_temperature);
                         tv_temperature.setText(temperature);
@@ -167,6 +164,10 @@ public class MainActivity extends BaseActivity {
                         TextView tv_weather= (TextView) view.findViewById(R.id.detail_tv_weather);
                         tv_weather.setText(weather);
 
+                        ImageView iv_weather= (ImageView) view.findViewById(R.id.detail_iv_weather);
+                        iv_weather.setImageResource(getWeatherIcon(fa));
+
+                        Log.e(LOG_TAG,temp+":"+time+":"+fa);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -174,5 +175,15 @@ public class MainActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    private int getWeatherIcon(String fa){
+        if ("00".equals(fa)){
+            return R.drawable.img_tianqi_qing;
+        }else if("01".equals(fa)){
+            return R.drawable.img_tianqi_duoyun;
+        }else{
+            return R.drawable.img_tianqi_qing;
+        }
     }
 }
