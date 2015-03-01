@@ -42,15 +42,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/app_padding"
+        android:paddingRight="@dimen/app_padding"
         android:paddingBottom="@dimen/app_padding"
         android:text="-3℃~11℃"
         android:textSize="16dp"
         android:textColor="@color/text_color"
         android:id="@+id/detail_tv_temperature"
         android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@+id/detail_tv_temp"
-        android:layout_alignStart="@+id/detail_tv_temp"/>
+        android:layout_alignParentRight="true"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -99,10 +98,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/app_padding"
-        android:text="空气质量 中等"
+        android:text="星期日"
         android:textSize="16dp"
         android:textColor="@color/text_color"
-        android:id="@+id/detail_tv_uv_index"
+        android:id="@+id/detail_tv_week"
         android:layout_below="@+id/detail_ll_line"
         android:layout_alignParentLeft="true"/>
     <TextView
@@ -113,7 +112,7 @@
         android:textSize="16dp"
         android:textColor="@color/text_color"
         android:id="@+id/detail_tv_time"
-        android:layout_below="@+id/detail_tv_uv_index"
+        android:layout_below="@+id/detail_tv_week"
         android:layout_alignParentLeft="true"/>
 
 </RelativeLayout>

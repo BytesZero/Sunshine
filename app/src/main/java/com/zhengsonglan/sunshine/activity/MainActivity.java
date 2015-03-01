@@ -70,7 +70,11 @@ public class MainActivity extends BaseActivity {
                 LayoutInflater inflater=getLayoutInflater();
                 View view=View.inflate(getApplicationContext(),R.layout.activity_detail,null);
                 TextView address= (TextView) view.findViewById(R.id.detail_tv_address);
-                address.setText(locations[position]);
+                String selected_address=locations[position];
+                address.setText(selected_address);
+                GetWeatherData(selected_address,position);
+                //防止错乱
+                view.setTag(position);
                 container.addView(view);
                 viewList.add(view);
                 return view;
@@ -99,45 +103,69 @@ public class MainActivity extends BaseActivity {
      * 获取天气的信息
      *
      */
-    private void GetWeatherData() {
+    private void GetWeatherData(String cityName, final int position) {
         //聚合天气数据
         Parameters params = new Parameters();
-        params.add("ip", "123.117.82.104");
+        params.add("cityname", cityName);
         params.add("key", "a1a0b4fe7f37a3e6af72714926d9b33c");
-        JuheData.executeWithAPI(1, "http://v.juhe.cn/weather/ip", JuheData.GET, params, new DataCallBack() {
+        JuheData.executeWithAPI(1, "http://v.juhe.cn/weather/index", JuheData.GET, params, new DataCallBack() {
             @Override
             public void resultLoaded(int err, String reason, String result) {
                 Log.e(LOG_TAG, "err:" + err + "result:" + result + "reason:" + reason);
                 if (err == 0) {
+                    /*"sk": {
+                        "temp": "7",
+                                "wind_direction": "西南风",
+                                "wind_strength": "2级",
+                                "humidity": "21%",
+                                "time": "19:00"
+                    },
+                    "today": {
+                        "temperature": "-3℃~11℃",
+                                "weather": "晴",
+                                "weather_id": {
+                            "fa": "00",
+                                    "fb": "00"
+                        },
+                        "wind": "南风3-4 级",
+                                "week": "星期日",
+                                "city": "北京",*/
                     try {
                         JSONObject jsonObject = new JSONObject(result);
                         JSONObject resultObject = jsonObject.getJSONObject("result");
+                        View view=vp_today.findViewWithTag(position);
+                        //sk
+                        JSONObject skObject = resultObject.getJSONObject("sk");
+                        //当前温度
+                        TextView tv_temp= (TextView) view.findViewById(R.id.detail_tv_temp);
+                        //发布时间
+                        TextView tv_time= (TextView) view.findViewById(R.id.detail_tv_time);
+                        String temp=skObject.getString("temp");
+                        String time=skObject.getString("time");
+                        tv_temp.setText(temp+"°");
+                        tv_time.setText(time+" 发布");
+
+                        Log.e(LOG_TAG,temp+":"+time);
+                        //today
                         JSONObject todayObject = resultObject.getJSONObject("today");
-                        /*"temperature": "-2℃~3℃",
-                                "weather": "小雪转晴",
-                                "weather_id": {
-                            "fa": "14",
-                                    "fb": "00"
-                        },
-                        "wind": "微风",
-                                "week": "星期六",
-                                "city": "北京",
-                                "date_y": "2015年02月28日",
-                                "dressing_index": "冷",
-                                "dressing_advice": "天气冷，建议着棉服、羽绒服、皮夹克加羊毛衫等冬季服装。年老体弱者宜着厚棉衣、冬大衣或厚羽绒服。",
-                                "uv_index": "最弱",
-                                "comfort_index": "",
-                                "wash_index": "不宜",
-                                "travel_index": "",
-                                "exercise_index": "较不宜",
-                                "drying_index": ""*/
                         String city = todayObject.getString("city");
                         String wind = todayObject.getString("wind");
                         String dressing_index = todayObject.getString("dressing_index");
                         String temperature = todayObject.getString("temperature");
                         String weather = todayObject.getString("weather");
-
-
+                        String week = todayObject.getString("week");
+                        //今日温度
+                        TextView tv_temperature= (TextView) view.findViewById(R.id.detail_tv_temperature);
+                        tv_temperature.setText(temperature);
+                        //星期
+                        TextView tv_week= (TextView) view.findViewById(R.id.detail_tv_week);
+                        tv_week.setText(week);
+                        //风向风级
+                        TextView tv_wind= (TextView) view.findViewById(R.id.detail_tv_wind);
+                        tv_wind.setText(wind);
+                        //今日天气
+                        TextView tv_weather= (TextView) view.findViewById(R.id.detail_tv_weather);
+                        tv_weather.setText(weather);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
