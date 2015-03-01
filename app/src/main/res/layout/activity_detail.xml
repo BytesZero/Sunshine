@@ -1,12 +1,119 @@
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <include layout="@layout/title"/>
+    android:layout_height="300dp"
+    android:background="@color/detail_bg">
 
 
 
 
-</LinearLayout>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/app_padding_2"
+        android:paddingTop="@dimen/app_padding_2"
+        android:id="@+id/imageView"
+        android:src="@drawable/img_shuaxin"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:paddingTop="@dimen/app_padding"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/img_tianqi_qing"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="@dimen/app_padding"
+        android:paddingTop="@dimen/app_padding"
+        android:text="12°"
+        android:textSize="64dp"
+        android:textColor="@color/text_color"
+        android:id="@+id/detail_tv_temp"
+        android:layout_below="@+id/imageView2"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/app_padding"
+        android:paddingBottom="@dimen/app_padding"
+        android:text="-3℃~11℃"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:id="@+id/detail_tv_temperature"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/detail_tv_temp"
+        android:layout_alignStart="@+id/detail_tv_temp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/app_padding"
+        android:paddingBottom="@dimen/app_padding"
+        android:text="北京"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:textColor="@color/text_color"
+        android:id="@+id/detail_tv_address"
+        android:layout_alignParentBottom="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/app_padding"
+        android:text="晴"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:id="@+id/detail_tv_weather"
+        android:layout_below="@+id/imageView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/app_padding"
+        android:text="南风3-4 级"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:id="@+id/detail_tv_wind"
+        android:layout_below="@+id/detail_tv_weather"
+        android:layout_alignParentLeft="true"/>
+
+    <LinearLayout
+        android:id="@+id/detail_ll_line"
+        android:layout_width="100dp"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="@dimen/app_padding"
+        android:layout_marginBottom="@dimen/app_padding_2"
+        android:layout_marginTop="@dimen/app_padding_2"
+        android:background="@color/text_color"
+        android:orientation="horizontal"
+        android:layout_below="@+id/detail_tv_wind"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/app_padding"
+        android:text="空气质量 中等"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:id="@+id/detail_tv_uv_index"
+        android:layout_below="@+id/detail_ll_line"
+        android:layout_alignParentLeft="true"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/app_padding"
+        android:text="17:00发布"
+        android:textSize="16dp"
+        android:textColor="@color/text_color"
+        android:id="@+id/detail_tv_time"
+        android:layout_below="@+id/detail_tv_uv_index"
+        android:layout_alignParentLeft="true"/>
+
+</RelativeLayout>

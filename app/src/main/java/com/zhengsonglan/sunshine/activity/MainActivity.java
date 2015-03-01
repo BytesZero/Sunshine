@@ -1,17 +1,13 @@
 package com.zhengsonglan.sunshine.activity;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.PopupMenu;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.thinkland.sdk.android.DataCallBack;
 import com.thinkland.sdk.android.JuheData;
@@ -23,7 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -31,71 +26,27 @@ public class MainActivity extends BaseActivity {
 
     public static String LOG_TAG = MainActivity.class.getSimpleName();
     /**
-     * title
+     * viewpager1
      */
-    ImageView iv_title_right;
+    ViewPager vp_today;
     /**
-     * content
+     * viewpager2
      */
-    ListView listView;
 
     /**
      * data
      */
-    List<String> weekForeCast;
-    ArrayAdapter<String> dataAdapter;
-
+    String [] locations={"北京","西安"};
+    List<View> viewList=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SDKInitializer.initialize(getApplicationContext());
+
         setContentView(R.layout.activity_main);
         initView();
-        initTitle();
         initData();
-    }
-
-    /**
-     * 初始化Title
-     */
-    private void initTitle() {
-        iv_title_right= (ImageView) findViewById(R.id.title_right_img);
-        iv_title_right.setVisibility(View.VISIBLE);
-        iv_title_right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPopup(v);
-            }
-        });
-    }
-
-    /**
-     * 初始化数据
-     */
-
-    private void initData() {
-        String[] forecasts = {
-                "Mon 6/23 - Sunny - 31/17",
-                "Tue 6/24 - Foggy - 21/8",
-                "Wed 6/25 - Cloudy - 22/17",
-                "Thurs 6/26 - Rainy - 18/11",
-                "Fri 6/27 - Foggy - 21/10",
-                "Sat 6/28 - TRAPPED IN WEATHERSTATION - 23/18",
-                "Sun 6/29 - Sunny - 20/7"
-        };
-        weekForeCast = new ArrayList<String>(Arrays.asList(forecasts));
-        dataAdapter = new ArrayAdapter<String>(this, R.layout.list_item_forecast, R.id.list_item_forecast_textview, weekForeCast);
-        listView.setAdapter(dataAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent=new Intent(MainActivity.this,DetailActivity.class);
-                startActivity(intent);
-            }
-        });
-        GetWeatherData();
-
     }
 
     /**
@@ -103,31 +54,47 @@ public class MainActivity extends BaseActivity {
      */
 
     private void initView() {
-        listView = (ListView) findViewById(R.id.listView_forecast);
+        vp_today= (ViewPager) findViewById(R.id.main_viewpager);
+
     }
 
     /**
-     * 显示弹出悬浮菜单
-     * @param view
+     * 初始化数据
      */
-    @SuppressLint("NewApi")
-    private void showPopup(View view)
-    {
-        PopupMenu popupMenu=new PopupMenu(this,view);
-        MenuInflater inflater=popupMenu.getMenuInflater();
-        inflater.inflate(R.menu.menu_main,popupMenu.getMenu());
-        popupMenu.show();
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+
+    private void initData() {
+        vp_today.setAdapter(new PagerAdapter() {
+
             @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Log.e(LOG_TAG,"getItemId:"+item.getItemId()+"getOrder:"+item.getOrder());
-                if (item.getOrder()==1){
-                    GetWeatherData();
-                }
-                return true;
+            public Object instantiateItem(ViewGroup container, int position) {
+                LayoutInflater inflater=getLayoutInflater();
+                View view=View.inflate(getApplicationContext(),R.layout.activity_detail,null);
+                TextView address= (TextView) view.findViewById(R.id.detail_tv_address);
+                address.setText(locations[position]);
+                container.addView(view);
+                viewList.add(view);
+                return view;
             }
+
+            @Override
+            public int getCount() {
+                return locations.length;
+            }
+
+            @Override
+            public boolean isViewFromObject(View view, Object object) {
+                return view==object;
+            }
+
+            @Override
+            public void destroyItem(ViewGroup container, int position, Object object) {
+                container.removeView(viewList.get(position));
+            }
+
         });
+
     }
+
     /**
      * 获取天气的信息
      *
@@ -169,8 +136,7 @@ public class MainActivity extends BaseActivity {
                         String dressing_index = todayObject.getString("dressing_index");
                         String temperature = todayObject.getString("temperature");
                         String weather = todayObject.getString("weather");
-                        weekForeCast.add(city + weather + temperature + wind + dressing_index);
-                        dataAdapter.notifyDataSetChanged();
+
 
 
                     } catch (JSONException e) {

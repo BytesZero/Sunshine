@@ -1,9 +1,6 @@
 package com.zhengsonglan.sunshine.activity;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.thinkland.sdk.android.SDKInitializer;
 import com.zhengsonglan.sunshine.R;
@@ -12,13 +9,9 @@ import com.zhengsonglan.sunshine.R;
 public class DetailActivity extends BaseActivity {
 
     public static String LOG_TAG = DetailActivity.class.getSimpleName();
+
     /**
-     * title
-     */
-    ImageView title_iv_left;
-    TextView title_tv_left;
-    /**
-     * content
+     * view
      */
 
     /**
@@ -31,32 +24,15 @@ public class DetailActivity extends BaseActivity {
         SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_detail);
         initView();
-        initTitle();
         initData();
     }
 
     /**
-     * 初始化Title
+     * 初始化视图
      */
-    private void initTitle() {
-        title_iv_left= (ImageView) findViewById(R.id.title_left_img);
-        title_iv_left.setImageResource(R.drawable.img_back_selected);
-        title_iv_left.setVisibility(View.VISIBLE);
-        title_iv_left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        title_tv_left= (TextView) findViewById(R.id.title_left_tv);
-        title_tv_left.setVisibility(View.VISIBLE);
-        title_tv_left.setText(R.string.action_back);
-        title_tv_left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                title_iv_left.performClick();
-            }
-        });
+
+    private void initView() {
+
     }
 
     /**
@@ -67,13 +43,6 @@ public class DetailActivity extends BaseActivity {
 
     }
 
-    /**
-     * 初始化视图
-     */
-
-    private void initView() {
-
-    }
 
 
 }

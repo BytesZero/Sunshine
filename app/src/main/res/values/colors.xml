@@ -2,4 +2,5 @@
 <resources>
     <color name="title_bg">#11cd6e</color>
     <color name="text_color">#ffffff</color>
+    <color name="detail_bg">#56abe4</color>
 </resources>
